@@ -17,7 +17,7 @@ async function fetchProducts() {
   try {    const response = await axios.get(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/products`);
     return response.data.products;
   } catch (error) {
-    console.error('取得產品列表失敗：', error);
+    console.error('取得產品列表失敗：', error.message);
     return [];
   }
 }
@@ -29,14 +29,15 @@ async function fetchProducts() {
 async function fetchCart() {
   // 請實作此函式
   // 回傳 response.data
-  try {    const response = await axios.get(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/carts`, {
+  try {
+    const response = await axios.get(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/carts`, {
       headers: {
-        authorization: ADMIN_TOKEN
+        authorization: token
       }
     });
     return response.data;
   } catch (error) {
-    console.error('取得購物車失敗：', error);
+    console.error('取得購物車失敗：', error.message);
     return { carts: [], total: 0, finalTotal: 0 };
   }
 }
@@ -51,16 +52,17 @@ async function addToCart(productId, quantity) {
   // 請實作此函式
   try {
     const response = await axios.post(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/carts`, {
-      productId,
-      quantity
-    }, {
+      data: {
+        productId,
+        quantity
+      },
       headers: {
         authorization: ADMIN_TOKEN
       }
     });
     return response.data;
   } catch (error) {
-    console.error('加入購物車失敗：', error);
+    console.error('加入購物車失敗：', error.message);
     return {};
   }
 }
@@ -83,7 +85,7 @@ async function updateCartItem(cartId, quantity) {
     });
     return response.data;
   } catch (error) {
-    console.error('更新購物車商品數量失敗：', error);
+    console.error('更新購物車商品數量失敗：', error.message);
     return {};
   }
 }
@@ -103,7 +105,7 @@ async function deleteCartItem(cartId) {
     });
     return response.data;
   } catch (error) {
-    console.error('刪除購物車商品失敗：', error);
+    console.error('刪除購物車商品失敗：', error.message);
     return {};
   }
 }
@@ -122,7 +124,7 @@ async function clearCart() {
     });
     return response.data;
   } catch (error) {
-    console.error('清空購物車失敗：', error);
+    console.error('清空購物車失敗：', error.message);
     return {};
   }
 }
@@ -144,7 +146,7 @@ async function createOrder(userInfo) {
     });
     return response.data;
   } catch (error) {
-    console.error('建立訂單失敗：', error);
+    console.error('建立訂單失敗：', error.message);
     return {};
   }
 }
@@ -171,9 +173,9 @@ async function fetchOrders() {
         authorization: ADMIN_TOKEN
       }
     });
-    return response.data;
+    return response.data.orders || [];
   } catch (error) {
-    console.error('取得訂單列表失敗：', error);
+    console.error('取得訂單列表失敗：', error.message);
     return [];
   }
 }
@@ -195,7 +197,7 @@ async function updateOrderStatus(orderId, isPaid) {
     });
     return response.data;
   } catch (error) {
-    console.error('更新訂單狀態失敗：', error);
+    console.error('更新訂單狀態失敗：', error.message);
     return {};
   }
 }
@@ -214,7 +216,7 @@ async function deleteOrder(orderId) {
     });
     return response.data;
   } catch (error) {
-    console.error('刪除訂單失敗：', error);
+    console.error('刪除訂單失敗：', error.message);
     return {};
   }
 }
